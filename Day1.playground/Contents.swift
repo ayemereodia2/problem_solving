@@ -16,6 +16,8 @@ import UIKit
 //BRUTE FORCE SOLUTION 1
 
 class Solution {
+    // Big O of N2 // because loop 1 is O(N * (N - 1)) = (N2 - N)
+    // ignoring the least dorminant term Big O is N2
     func maxArea(_ height: [Int]) -> Int {
         var maxi = 0
         for index in 0..<height.count {
@@ -30,7 +32,52 @@ class Solution {
         
         return maxi
     }
+    // A more efficient solution
+    // By observing the brute force solution above
+    // You'd observe theres an unnessary calculation of Area when min(height1 < height2) * distance, as distance reduces from the right to left of the array.
+    // the only Area calculation that matters is the from the farthest right end of the array.
+    // so we make use of a two pointers to track the left and right values
+    // if a left value is less than a right value we increment a left pointer by one to the right
+    // else we decrement a right pointer to the left
+    //
+    func maxAreaEf(_ height: [Int]) -> Int {
+        var maxi = 0
+        var l = 0
+        var r = height.count
+        while l < r {
+            var distance = r - l
+            let result = min(height[l], height[r])  * distance
+            maxi = max(result, maxi)
+            
+            if height[l] < height[r] {
+                l += 1
+            } else {
+                r -= 1
+            }
+        }
+        
+        return maxi
+    }
 }
-// Big O of N2 // because loop 1 is O(N * (N - 1)) = (N2 - N)
-// ignoring the least dorminant term Big O is N2
 
+
+func maxAreaEf(_ height: [Int]) -> Int {
+    var maxi = 0
+    var l = 0
+    var r = height.count - 1
+    while l < r {
+        var distance = r - l
+        let result = min(height[l], height[r])  * distance
+        maxi = max(result, maxi)
+        
+        if height[l] < height[r] {
+            l += 1
+        } else {
+            r -= 1
+        }
+    }
+    
+    return maxi
+}
+
+maxAreaEf([4,3,2,1,4])
