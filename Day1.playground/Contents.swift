@@ -60,7 +60,6 @@ class Solution {
     }
 }
 
-
 func maxAreaEf(_ height: [Int]) -> Int {
     var maxi = 0
     var l = 0
