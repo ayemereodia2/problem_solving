@@ -87,3 +87,32 @@ class Solution {
     }
 }
 // BigO is a function of input size. ON
+class Solutionv {
+    func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
+        var remainingFuel = 0
+        var startIndex = -1
+    
+        for (index, costValue) in cost.enumerated() {
+            let totalFuel = (remainingFuel + gas[index])
+            if totalFuel >= costValue {
+                
+                remainingFuel = totalFuel - costValue
+                if index == (cost.count - 1) && remainingFuel >= 0 {
+                    if startIndex < index {
+                        startIndex = index
+                    }
+                    
+                    return startIndex
+                }
+
+            } else {
+                startIndex = -1
+                continue
+            }
+            
+            startIndex = index
+        }
+    
+    return -1
+}
+}
