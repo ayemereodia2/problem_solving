@@ -87,32 +87,61 @@ class Solution {
     }
 }
 // BigO is a function of input size. ON
-class Solutionv {
+class SolutionV {
     func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
         var remainingFuel = 0
-        var startIndex = -1
-    
+        var gasIndex = 0
+        var costIndex = 0
+        var indez = 0
+        var totalFuel = 0
+        
         for (index, costValue) in cost.enumerated() {
-            let totalFuel = (remainingFuel + gas[index])
+             //print(index)
+            totalFuel = (remainingFuel + gas[gasIndex])
+            
             if totalFuel >= costValue {
-                
+                indez = index
+                //print(indez)
                 remainingFuel = totalFuel - costValue
-                if index == (cost.count - 1) && remainingFuel >= 0 {
-                    if startIndex < index {
-                        startIndex = index
+            
+                while totalFuel >= cost[costIndex] {
+                    
+                    remainingFuel = totalFuel - cost[costIndex]
+                    
+                    if (cost.count - 1) != costIndex {
+                        costIndex += 1
+                        gasIndex += 1
+                    } else {
+        
+                        costIndex = 0
+                        gasIndex = 0
                     }
                     
-                    return startIndex
+                    totalFuel = (remainingFuel + gas[gasIndex])
+                    
+                    if gasIndex == indez {
+                        print(totalFuel)
+                        return gasIndex
+                    }
                 }
 
             } else {
-                startIndex = -1
+                    //gasIndex += 1
+                    //costIndex += 1
+                remainingFuel = 0
                 continue
             }
-            
-            startIndex = index
+        
         }
     
     return -1
 }
 }
+
+let res = SolutionV()
+
+//res.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2])
+
+//res.canCompleteCircuit([2,3,4], [3,4,3])
+//res.canCompleteCircuit([4,3,8,6,5], [5,8,4,7,7])
+
