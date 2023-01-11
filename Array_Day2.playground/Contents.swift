@@ -90,44 +90,53 @@ class Solution {
 class SolutionV {
     func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
         var remainingFuel = 0
-        var gasIndex = 0
-        var costIndex = 0
+        var indexer = 0
         var indez = 0
+        var startIndex = 0
+
         var totalFuel = 0
+
+        if gas.count ==  1 && cost.count == 1 {
+            if gas[0] >= cost[0] {
+                return 0
+            } else {
+                return -1
+            }
+        }
         
         for (index, costValue) in cost.enumerated() {
-             //print(index)
-            totalFuel = (remainingFuel + gas[gasIndex])
+            totalFuel = (remainingFuel + gas[indexer])
             
-            if totalFuel >= costValue {
-                indez = index
-                //print(indez)
+            if totalFuel >= cost[indexer] {
+                startIndex = indexer
                 remainingFuel = totalFuel - costValue
             
-                while totalFuel >= cost[costIndex] {
+                while totalFuel >= cost[indexer] {
+                    indez += 1
+                    remainingFuel = totalFuel - cost[indexer]
                     
-                    remainingFuel = totalFuel - cost[costIndex]
-                    
-                    if (cost.count - 1) != costIndex {
-                        costIndex += 1
-                        gasIndex += 1
+                    if (cost.count - 1) != indexer {
+                        indexer += 1
                     } else {
-        
-                        costIndex = 0
-                        gasIndex = 0
+                        indexer = 0
                     }
                     
-                    totalFuel = (remainingFuel + gas[gasIndex])
+                    totalFuel = (remainingFuel + gas[indexer])
                     
-                    if gasIndex == indez {
-                        print(totalFuel)
-                        return gasIndex
+                    if indez == cost.count - 1 && totalFuel >= cost[indexer] {
+                        return startIndex
                     }
                 }
 
+                if indexer == cost.count - 1 {
+                    return -1
+                }
+
+                indez = 0
+                
+
             } else {
-                    //gasIndex += 1
-                    //costIndex += 1
+                indexer += 1
                 remainingFuel = 0
                 continue
             }
@@ -140,8 +149,23 @@ class SolutionV {
 
 let res = SolutionV()
 
-//res.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2])
+ // res.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2])
+//  res.canCompleteCircuit([2,3,4], [3,4,3])
+//  res.canCompleteCircuit([4,3,8,6,5], [5,8,4,7,7])
 
-//res.canCompleteCircuit([2,3,4], [3,4,3])
-//res.canCompleteCircuit([4,3,8,6,5], [5,8,4,7,7])
+ // res.canCompleteCircuit([4,3,8,6,5], [5,8,4,7,7])
 
+//res.canCompleteCircuit([5,1,2,3,4], [4,4,1,5,1])
+
+//res.canCompleteCircuit([3,3,4], [3,4,4])
+
+//res.canCompleteCircuit([5], [4])
+
+
+//res.canCompleteCircuit([5,0,9,4,3,3,9,9,1,2], [6,7,5,9,5,8,7,1,10,5])
+let gas = [67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66]
+
+let cost = [27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+
+
+//res.canCompleteCircuit(gas, cost)
