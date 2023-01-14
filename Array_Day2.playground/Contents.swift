@@ -87,10 +87,21 @@ class Solution {
     }
 }
 // BigO is a function of input size. ON
+// Can Complete Circuit using gas
+// Hint:- Keep a controlIndex starting from zero, remainingFuel, totalFuel variable
+// Looping from left to right using the cost array since both arrays are equal
+// within the first loop, find calculate the totalFuel = sum of remainingFuel and gas using the controlIndex
+
+// within the first loop
+// check if totalFuel >= cost[controlIndex]
+// keep that startIndex
+// then subtract the totalFuel from the cost[i] and assign to remainingFuel variable (remainingFuel = totalFuel - cost[i])
+//  within the main loop, create the a while loop to check where totalFuel >= cost[controlIndex]
+
 class SolutionV {
     func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
         var remainingFuel = 0
-        var indexer = 0
+        var controlIndex = 0
         var indez = 0
         var startIndex = 0
 
@@ -104,31 +115,31 @@ class SolutionV {
             }
         }
         
-        for (index, costValue) in cost.enumerated() {
-            totalFuel = (remainingFuel + gas[indexer])
+        for (_, costValue) in cost.enumerated() {
+            totalFuel = (remainingFuel + gas[controlIndex])
             
-            if totalFuel >= cost[indexer] {
-                startIndex = indexer
+            if totalFuel >= cost[controlIndex] {
+                startIndex = controlIndex
                 remainingFuel = totalFuel - costValue
             
-                while totalFuel >= cost[indexer] {
+                while totalFuel >= cost[controlIndex] {
                     indez += 1
-                    remainingFuel = totalFuel - cost[indexer]
+                    remainingFuel = totalFuel - cost[controlIndex]
                     
-                    if (cost.count - 1) != indexer {
-                        indexer += 1
+                    if (cost.count - 1) != controlIndex {
+                        controlIndex += 1
                     } else {
-                        indexer = 0
+                        controlIndex = 0
                     }
                     
-                    totalFuel = (remainingFuel + gas[indexer])
+                    totalFuel = (remainingFuel + gas[controlIndex])
                     
-                    if indez == cost.count - 1 && totalFuel >= cost[indexer] {
+                    if indez == cost.count - 1 && totalFuel >= cost[controlIndex] {
                         return startIndex
                     }
                 }
 
-                if indexer == cost.count - 1 {
+                if controlIndex == cost.count - 1 {
                     return -1
                 }
 
@@ -136,7 +147,7 @@ class SolutionV {
                 
 
             } else {
-                indexer += 1
+                controlIndex += 1
                 remainingFuel = 0
                 continue
             }
@@ -169,3 +180,57 @@ let cost = [27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49
 
 
 //res.canCompleteCircuit(gas, cost)
+
+
+class SolutionM {
+  var i = 0
+    var j = 2
+    var result = 0
+    var arrResult = [[Int]]()
+    var outerArr:[Int] = []
+    
+    func threeSum(_ nums: [Int]) -> [[Int]] {
+        
+        if nums.count == 3 {
+            result = nums.reduce(0, +)
+            
+            if result == 0 {
+                arrResult.append(nums)
+                return arrResult
+            } else {
+                return []
+            }
+        } else if nums.count < 3 {
+            return []
+        }
+        
+        while nums[i...].count > 2 {
+            
+            while j < nums.count {
+               
+                result = nums[i] + nums[j - 1...j].reduce(0,+)
+                
+                if result ==  0 {
+                    print(nums[i], nums[j - 1...j])
+                    
+                    if !outerArr.contains(nums[i]), !outerArr.contains(nums[j-1]), !outerArr.contains(nums[j]) {
+                        outerArr.append(nums[i])
+                        outerArr.append(nums[j])
+                        outerArr.append(nums[j-1])
+                    }
+                    
+                    if !arrResult.contains(outerArr) {
+                        arrResult.append(outerArr)
+                    }
+                    
+                }
+                outerArr = []
+                j += 1
+                
+            }
+            outerArr = []
+            i += 1
+        }
+        return arrResult
+    }
+}
