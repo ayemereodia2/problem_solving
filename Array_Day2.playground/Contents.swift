@@ -182,60 +182,14 @@ let cost = [27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49
 
 //res.canCompleteCircuit(gas, cost)
 
-
-class SolutionM {
-  var i = 0
-    var j = 2
-    var result = 0
-    var arrResult = [[Int]]()
-    var outerArr:[Int] = []
-    
-    func threeSum(_ nums: [Int]) -> [[Int]] {
-        
-        if nums.count == 3 {
-            result = nums.reduce(0, +)
-            
-            if result == 0 {
-                arrResult.append(nums)
-                return arrResult
-            } else {
-                return []
-            }
-        } else if nums.count < 3 {
-            return []
-        }
-        
-        while nums[i...].count > 2 {
-            
-            while j < nums.count {
-               
-                result = nums[i] + nums[j - 1...j].reduce(0,+)
-                
-                if result ==  0 {
-                    print(nums[i], nums[j - 1...j])
-                    
-                    if !outerArr.contains(nums[i]), !outerArr.contains(nums[j-1]), !outerArr.contains(nums[j]) {
-                        outerArr.append(nums[i])
-                        outerArr.append(nums[j])
-                        outerArr.append(nums[j-1])
-                    }
-                    
-                    if !arrResult.contains(outerArr) {
-                        arrResult.append(outerArr)
-                    }
-                    
-                }
-                outerArr = []
-                j += 1
-                
-            }
-            outerArr = []
-            i += 1
-        }
-        return arrResult
-    }
-}
-
+// The Three Sum problem
+// with a Brute force solution of bigO of N3
+// HINT: Use 3 nested for loops
+// loop 1 should start from index 0
+// loop 2 from index 1
+// loop 2 from index 2
+// within the 3rd loop sum up the array element found in index 0 to 2 that is equal to zero.
+// use a set of array to keep track of any unique values before appending to a final result output.
 
 class SolutionQ {
     
@@ -243,14 +197,8 @@ class SolutionQ {
     var result2 = 0
    
     var arrResult = [[Int]]()
-    var outerArr:Set<Int> = Set<Int>()
     
     func threeSum(_ nums: [Int]) -> [[Int]] {
-        var index1 = 0
-        var index2 = index1 + 1
-        var index3 = nums.count - 1
-        var index4 = index3 - 1
-
         if nums.count == 3 {
             result = nums.reduce(0, +)
             
@@ -264,68 +212,36 @@ class SolutionQ {
             return []
         }
         
-        while nums[index1...].count > 2 || nums[...index3].count < 2 {
+        var arrResult = [[Int]]()
+        var uniqueSet = Set<[Int]>()
+        
+        for i in 0..<nums.count {
             
-            result = nums[index1] + nums[index2] + nums[index2 + 1]
-            result2 = nums[index3] + nums[index4] + nums[index4 - 1]
-            
-            if result == 0 {
-                let arr = [nums[index1], nums[index2], nums[index2 + 1]]
+            for j in i + 1..<nums.count {
                 
-                //if !alreadyContains(arr,arrResult) {
-                    arrResult.append(arr)
-                //}
+                for k in j + 1..<nums.count {
+                    print("\(i) \(j) \(k)")
+                    if nums[i] + nums[j] + nums[k] == 0 {
+                        let ar = [nums[i], nums[j], nums[k]].sorted()
+                        if !uniqueSet.contains(ar) {
+                            uniqueSet.insert(ar)
+                            arrResult.append(ar)
+                        } else {
+                            continue
+                        }
+                    }
+                }
             }
-
-            if result2 == 0 {
-                let arr = [nums[index3], nums[index4], nums[index4 - 1]]
-                
-                //if !alreadyContains(arr,arrResult) {
-                    arrResult.append(arr)
-                //}
-            }
-            
-            if (index2 == nums.count - 2) && (index4 == 1) {
-                index1 += 1
-                index3 -= 1
-                index2 = index1 + 1
-                index4 = index3 - 1
-            } else {
-               
-                index2 += 1
-                index4 -= 1
-            }
-           
         }
-
+        
         return arrResult
-    }
-    
-    func alreadyContains(_ input: [Int], _ result: [[Int]]) -> Bool {
-        var count = 0
-        
-        for numbers in result {
-            for num in input {
-                if numbers.contains(num) {
-                    count += 1
-                }
-                
-                if count == 3 {
-                    return true
-                }
-            }
-            
-            count = 0
-        }
-        
-        return false
     }
 }
 
 let des = SolutionQ()
+//print(des.threeSum([1,-1,-1,0]))
 //print(des.threeSum([-1,0,1,2,-1,-4]))
-print(des.threeSum([-1,0,1,2,-1,-4,-2,-3,3,0,4]))
-[[-4,0,4],[-4,1,3],[-3,-1,4],[-3,0,3],[-3,1,2],[-2,-1,3],[-2,0,2],[-1,-1,2],[-1,0,1]]
-//let ar = [-1,0,1,2,-1,-4]
-//
+//print(des.threeSum([-1,0,1,2,-1,-4,-2,-3,3,0,4]))
+
 //print(ar.count)
+
