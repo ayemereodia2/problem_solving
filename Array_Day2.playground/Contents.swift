@@ -236,12 +236,57 @@ class SolutionQ {
         
         return arrResult
     }
+    
+    // 3 sum using improved solution of Big 02
+    // Hint: 
+    
+    func threeSumImpr(_ nums: [Int]) -> [[Int]] {
+        if nums.count == 3 {
+            result = nums.reduce(0, +)
+            
+            if result == 0 {
+                arrResult.append(nums)
+                return arrResult
+            } else {
+                return []
+            }
+        } else if nums.count < 3 {
+            return []
+        }
+        
+        var arrResult = [[Int]]()
+        var uniqueSetx = Set<[Int]>()
+        for i in 0..<nums.count {
+            var uniqueSet = Set<Int>()
+
+            for j in i + 1..<nums.count {
+                
+                let x = -(nums[i] + nums[j])
+                
+                if uniqueSet.contains(x) {
+                    let ar = [x,nums[i], nums[j]].sorted()
+                    if !uniqueSetx.contains(ar) {
+                        uniqueSetx.insert(ar)
+                        arrResult.append(ar)
+                    } else {
+                        continue
+                    }
+                   
+                } else {
+                    uniqueSet.insert(nums[j])
+                }
+            }
+        }
+        
+        return arrResult
+    }
 }
 
 let des = SolutionQ()
 //print(des.threeSum([1,-1,-1,0]))
+//print(des.threeSumImpr([1, -2, 1, 0, 5]))
 //print(des.threeSum([-1,0,1,2,-1,-4]))
-//print(des.threeSum([-1,0,1,2,-1,-4,-2,-3,3,0,4]))
+//print(des.threeSumImpr([-1,0,1,2,-1,-4,-2,-3,3,0,4]))
 
 //print(ar.count)
 
