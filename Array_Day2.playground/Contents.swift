@@ -302,7 +302,7 @@ func printTriplets() {
     }
 }
 
-// 3SUM closest
+// 3SUM closest to target
 
 class SolutionS {
     func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
