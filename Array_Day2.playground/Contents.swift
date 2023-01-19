@@ -290,3 +290,37 @@ let des = SolutionQ()
 
 //print(ar.count)
 
+func printTriplets() {
+    let ar = [1,2,3]
+
+    for i in 0..<ar.count {
+        for j in i + 1..<ar.count {
+            for k in j + 1..<ar.count {
+                print("\(i) \(j) \(k)")
+            }
+        }
+    }
+}
+
+// 3SUM closest
+
+class SolutionS {
+    func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
+        // if sum > 0 keep track of least distance between sum - traget
+        // if sum < 0 keep track of most distance between sum - target
+        
+        for i in 0..<nums.count {
+            for j in i + 1..<nums.count {
+                for k in j + 1..<nums.count {
+                    print("\(nums[i]) \(nums[j]) \(nums[k])")
+                }
+            }
+        }
+        
+        return 0
+    }
+}
+
+let solution = SolutionS()
+
+solution.threeSumClosest([-1, 2, 1,-4], 1)
