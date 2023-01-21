@@ -308,19 +308,31 @@ class SolutionS {
     func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
         // if sum > 0 keep track of least distance between sum - traget
         // if sum < 0 keep track of most distance between sum - target
+        var closer = 0
         
         for i in 0..<nums.count {
             for j in i + 1..<nums.count {
                 for k in j + 1..<nums.count {
-                    print("\(nums[i]) \(nums[j]) \(nums[k])")
+                   let sum = nums[i] + nums[j] + nums[k]
+                    
+                    if sum == target {
+                        return sum
+                    }
+                    
+                    if closer > (target - sum) {
+                        closer = sum
+                    }
                 }
             }
         }
         
-        return 0
+        return closer
     }
 }
 
 let solution = SolutionS()
 
-solution.threeSumClosest([-1, 2, 1,-4], 1)
+//print(solution.threeSumClosest([1, 1, 1,0], -100))
+//print(solution.threeSumClosest([-1, 2, 1,-4], 1))
+print(solution.threeSumClosest([4, 0, 5,-5,3,3,0,-4,-5, -2], -2))
+
