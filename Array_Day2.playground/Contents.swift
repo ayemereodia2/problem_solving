@@ -194,8 +194,6 @@ let cost = [27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49
 class SolutionQ {
     
     var result = 0
-    var result2 = 0
-   
     var arrResult = [[Int]]()
     
     func threeSum(_ nums: [Int]) -> [[Int]] {
@@ -290,26 +288,30 @@ let des = SolutionQ()
 
 //print(ar.count)
 
-func printTriplets() {
-    let ar = [1,2,3]
+func printQuadruplets() {
+    let ar = [1,2,3,4]
 
     for i in 0..<ar.count {
         for j in i + 1..<ar.count {
             for k in j + 1..<ar.count {
-                print("\(i) \(j) \(k)")
+                for l in k + 1..<ar.count {
+                    print("\(i) \(j) \(k) \(l)")
+                }
             }
         }
     }
 }
 
+printQuadruplets()
+
 // 3SUM closest to target
 // HINT: create a func to track the DISTANCE between calculated sum of triplet and target abs(sum - target)
 // use three for loops to calculate the sum
-
+// Big O(n3)
+// Space O(1)
 class SolutionS {
     func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
-        // if sum > 0 keep track of least distance between sum - traget
-        // if sum < 0 keep track of most distance between sum - target
+        
         guard nums.count > 2 else { return 0 }
         
         let firstTripletSum = nums[0] + nums[1] + nums[2]
@@ -338,9 +340,37 @@ class SolutionS {
     func distanceBetween(sum: Int, target: Int) -> Int {
         abs(sum - target)
     }
+    
+    func threeSumClosestImprove(_ nums: [Int], _ target: Int) -> Int {
+        // if sum > 0 keep track of least distance between sum - traget
+        // if sum < 0 keep track of most distance between sum - target
+        guard nums.count > 2 else { return 0 }
+        
+        let firstTripletSum = nums[0] + nums[1] + nums[2]
+        var initialDistance = distanceBetween(sum: firstTripletSum, target: target)
+        var nSum = firstTripletSum
+        
+        for i in 0..<nums.count {
+            for j in i + 1..<nums.count {
+                for k in j + 1..<nums.count {
+                   let sum = nums[i] + nums[j] + nums[k]
+                    
+                    let result = distanceBetween(sum: sum, target: target)
+                    
+                    if result < initialDistance {
+                        initialDistance = result
+                        nSum = sum
+                    }
+                    
+                }
+            }
+        }
+        
+        return nSum
+    }
 }
 
-let solution = SolutionS()
+//let solution = SolutionS()
 
 //print(solution.threeSumClosest([1, 1, 1,0], -100))
 //print(solution.threeSumClosest([-1, 2, 1,-4], 1))
@@ -350,3 +380,53 @@ let big1 = [40,-53,36,89,-38,-51,80,11,-10,76,-30,46,-39,-15,4,72,83,-25,33,-69,
 
 //print(solution.threeSumClosest(big1, 292))
 //print(40+(-53)+36)
+class SolutionY {
+    var result = 0
+    var arrResult = [[Int]]()
+    
+    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+        if nums.count == 4 {
+            result = nums.reduce(0, +)
+            
+            if result == target {
+                arrResult.append(nums)
+                return arrResult
+            } else {
+                return []
+            }
+        } else if nums.count < 4 {
+            return []
+        }
+        
+        var arrResult = [[Int]]()
+        var uniqueSet = Set<[Int]>()
+        
+        for i in 0..<nums.count {
+            
+            for j in i + 1..<nums.count {
+                
+                for k in j + 1..<nums.count {
+                    
+                    for l in k + 1..<nums.count {
+                        if nums[i] + nums[j] + nums[k] + nums[l] == target {
+                            let ar = [nums[i], nums[j], nums[k], nums[l]].sorted()
+                            if !uniqueSet.contains(ar) {
+                                uniqueSet.insert(ar)
+                                arrResult.append(ar)
+                            } else {
+                                continue
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return arrResult
+    }
+}
+
+let some = SolutionY()
+
+//print(some.fourSum([1,0,-1,0,-2,2], 0))
+print(some.fourSum([2,2,2,2,2], 8))
