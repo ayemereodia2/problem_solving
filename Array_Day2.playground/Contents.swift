@@ -380,6 +380,10 @@ let big1 = [40,-53,36,89,-38,-51,80,11,-10,76,-30,46,-39,-15,4,72,83,-25,33,-69,
 
 //print(solution.threeSumClosest(big1, 292))
 //print(40+(-53)+36)
+
+// 4SUM to Target
+// Brute force solution Big O(n4)
+// Hint:
 class SolutionY {
     var result = 0
     var arrResult = [[Int]]()
