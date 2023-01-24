@@ -236,7 +236,15 @@ class SolutionQ {
     }
     
     // 3 sum using improved solution of Big 02
-    // Hint: 
+    // Hint: Use two for loops.
+    // loop 1 should begin from 0 -> n - 1,
+    // loop 2 begin from 1 -> n - 1
+    // within loop 1, create a Set
+    // within loop 2 find a sum of -(num[i] + num[j]) = set to variable x
+    // check if x is in Set. If it contains, create and sort a new array of [x,num[i], num[j]]
+    // Use another Set of interger arrays to track of unique Sum that is equal to Zero.
+    // if x is not in Set, insert num[j] into Set.
+    //Dictionary to store
     
     func threeSumImpr(_ nums: [Int]) -> [[Int]] {
         if nums.count == 3 {
@@ -341,28 +349,45 @@ class SolutionS {
         abs(sum - target)
     }
     
+    // HINT: - Sort the array in ascending order,
+    // then use a for loop to move from left to right
+    // Use Two Pointers. ptr1 is on the next index i + 1
+    // pt2 is on the last index nums.count - 1
+    // use a while ptr1 < ptr2, calculate sum = nums[i] + nums[ptr1] + nums[prt2]
+    // if abs(target - sum) < abs(target - closest)
+    // set closest = sum
+    // and if sum > target decrement ptr2 to the left by 1
+    // else increment ptr1 to the right
     func threeSumClosestImprove(_ nums: [Int], _ target: Int) -> Int {
-        // if sum > 0 keep track of least distance between sum - traget
-        // if sum < 0 keep track of most distance between sum - target
+        
         guard nums.count > 2 else { return 0 }
         
-        let firstTripletSum = nums[0] + nums[1] + nums[2]
-        var initialDistance = distanceBetween(sum: firstTripletSum, target: target)
-        var nSum = firstTripletSum
+        let sortedNums = nums.sorted()
         
-        for i in 0..<nums.count {
-            for j in i + 1..<nums.count {
-                for k in j + 1..<nums.count {
-                   let sum = nums[i] + nums[j] + nums[k]
+        let firstTripletSum = sortedNums[0] + sortedNums[1] + sortedNums[2]
+        var nSum = firstTripletSum
+                
+        for i in 0..<sortedNums.count {
+            var ptr1 = i + 1
+            var ptr2 = sortedNums.count - 1
+            
+            while(ptr1 < ptr2) {
+                
+                let sum = sortedNums[i] + sortedNums[ptr1] + sortedNums[ptr2]
+                let x = abs(target - sum)
+                let y = abs(target - nSum)
+                
+                if x < y {
                     
-                    let result = distanceBetween(sum: sum, target: target)
-                    
-                    if result < initialDistance {
-                        initialDistance = result
-                        nSum = sum
-                    }
-                    
+                    nSum = sum
                 }
+                
+                if sum > target {
+                    ptr2 -= 1
+                } else {
+                    ptr1 += 1
+                }
+                
             }
         }
         
@@ -370,16 +395,15 @@ class SolutionS {
     }
 }
 
-//let solution = SolutionS()
+let solution = SolutionS()
 
-//print(solution.threeSumClosest([1, 1, 1,0], -100))
+//print(solution.threeSumClosestImprove([1, 1, 1,0], -100))
 //print(solution.threeSumClosest([-1, 2, 1,-4], 1))
 //print(solution.threeSumClosest([4, 0, 5,-5,3,3,0,-4,-5, -2], -2))
 //print(solution.threeSumClosest([0, 0,0], 0))
 let big1 = [40,-53,36,89,-38,-51,80,11,-10,76,-30,46,-39,-15,4,72,83,-25,33,-69,-73,-100,-23,-37,-13,-62,-26,-54,36,-84,-65,-51,11,98,-21,49,51,78,-58,-40,95,-81,41,-17,-70,83,-88,-14,-75,-10,-44,-21,6,68,-81,-1,41,-61,-82,-24,45,19,6,-98,11,9,-66,50,-97,-2,58,17,51,-13,88,-16,-77,31,35,98,-2,0,-70,6,-34,-8,78,22,-1,-93,-39,-88,-77,-65,80,91,35,-15,7,-37,-96,65,3,33,-22,60,1,76,-32,22]
 
-//print(solution.threeSumClosest(big1, 292))
-//print(40+(-53)+36)
+//print(solution.threeSumClosestImprove(big1, 292))
 
 // 4SUM to Target
 // Brute force solution Big O(n4)
@@ -428,9 +452,36 @@ class SolutionY {
         
         return arrResult
     }
+    
+    func fourSumImprove(_ nums: [Int], _ target: Int) -> [[Int]] {
+        if nums.count == 4 {
+            result = nums.reduce(0, +)
+            
+            if result == target {
+                arrResult.append(nums)
+                return arrResult
+            } else {
+                return []
+            }
+        } else if nums.count < 4 {
+            return []
+        }
+        
+        var arrResult = [[Int]]()
+        var uniqueSet = Set<[Int]>()
+        
+        for i in 0..<nums.count {
+            
+            for j in i + 1..<nums.count {
+                
+            }
+        }
+        
+        return arrResult
+    }
 }
 
 let some = SolutionY()
 
-//print(some.fourSum([1,0,-1,0,-2,2], 0))
-print(some.fourSum([2,2,2,2,2], 8))
+//print(some.fourSumImprove([1,0,-1,0,-2,2], 0))
+//print(some.fourSumImprove([2,2,2,2,2], 8))
