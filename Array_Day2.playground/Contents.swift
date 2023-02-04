@@ -310,7 +310,7 @@ func printQuadruplets() {
     }
 }
 
-printQuadruplets()
+//printQuadruplets()
 
 // 3SUM closest to target
 // HINT: create a func to track the DISTANCE between calculated sum of triplet and target abs(sum - target)
@@ -481,7 +481,82 @@ class SolutionY {
     }
 }
 
-let some = SolutionY()
+//let some = SolutionY()
 
 //print(some.fourSumImprove([1,0,-1,0,-2,2], 0))
 //print(some.fourSumImprove([2,2,2,2,2], 8))
+
+//let ar = [1,2,3]
+//for i in 0..<ar.count {
+//    
+//}
+
+class SolutionL {
+    
+    func nextPermutation(_ nums: inout [Int]) {
+     //rethinking the solution to next permutation problem
+        let arrayInt = convertToInt(nums)
+        let counted = nums.count
+        var least = Int.max
+        var j = 1
+        var i = 0
+        
+        for _ in nums  {
+             
+            while j < counted {
+                
+                var removed = nums.remove(at: i)
+                nums.insert(removed, at: j)
+                print(nums)
+                let convertedInt = convertToInt(nums)
+                if convertedInt == arrayInt {
+                    j += 1
+                    i += 1
+                    continue }
+                
+                if convertedInt < least && convertedInt > arrayInt {
+                    least = convertedInt
+                }
+                
+                j += 1
+                i += 1
+                
+            }
+            
+            j = 1
+            i = 0
+        }
+        
+
+        if least == Int.max {
+            nums = nums.sorted(by: <)
+        } else {
+            nums = convertToArray(least)
+            if nums.count != counted {
+                nums.insert(0, at: 0)
+            }
+        }
+       
+    }
+    
+    func convertToInt(_ myArray: [Int]) -> Int {
+        var myString = ""
+        _ = myArray.map{ myString = myString + "\($0)" }
+        return Int(myString)!
+    }
+    
+    func convertToArray(_ num: Int) -> [Int] {
+        let array = String(num).compactMap({$0.wholeNumberValue})
+        return array
+    }
+}
+
+
+let perm = SolutionL()
+
+var arr = [5,4,7,5,3,2]
+//var removed = arr.remove(at: 1)
+perm.nextPermutation(&arr)
+
+//print(arr.insert(removed, at: 2))
+//print(arr)
