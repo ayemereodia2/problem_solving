@@ -495,28 +495,40 @@ class SolutionL {
     
     func nextPermutation(_ nums: inout [Int]) {
      //rethinking the solution to next permutation problem
-        let arrayInt = convertToInt(nums)
+        
         let counted = nums.count
-        var least = Int.max
+        guard let first = nums.first else { return }
         var j = 1
         var i = 0
-        
+        var testArr = nums
+       
         for _ in nums  {
              
             while j < counted {
                 
                 var removed = nums.remove(at: i)
                 nums.insert(removed, at: j)
-                print(nums)
-                let convertedInt = convertToInt(nums)
-                if convertedInt == arrayInt {
+                
+                if let inFirst = nums.first, inFirst >= first {
+                    
+                    if testArr == nums {
+                        j += 1
+                        i += 1
+                        continue
+                    } else {
+                        testArr = compareArray(nums, testArr)
+                        j += 1
+                        i += 1
+                    }
+                    
+                } else {
+                    
                     j += 1
                     i += 1
-                    continue }
-                
-                if convertedInt < least && convertedInt > arrayInt {
-                    least = convertedInt
+                    continue
                 }
+                
+                
                 
                 j += 1
                 i += 1
@@ -527,36 +539,51 @@ class SolutionL {
             i = 0
         }
         
-
-        if least == Int.max {
-            nums = nums.sorted(by: <)
-        } else {
-            nums = convertToArray(least)
-            if nums.count != counted {
-                nums.insert(0, at: 0)
+    }
+    
+    func compareArray(_ nums1:[Int], _ nums2: [Int]) -> [Int] {
+        for i in 0..<nums1.count {
+            if nums1[i] < nums2[i] {
+                return nums1
+            } else if nums2[i] < nums1[i] {
+                return nums2
+            }else {
+                continue
             }
+                
         }
-       
-    }
-    
-    func convertToInt(_ myArray: [Int]) -> Int {
-        var myString = ""
-        _ = myArray.map{ myString = myString + "\($0)" }
-        return Int(myString)!
-    }
-    
-    func convertToArray(_ num: Int) -> [Int] {
-        let array = String(num).compactMap({$0.wholeNumberValue})
-        return array
+        
+        return []
     }
 }
 
 
 let perm = SolutionL()
-
-var arr = [5,4,7,5,3,2]
+var arr = [80,12,17,84]
+var ars = [1,2,3]
+var arx = [1,1,5]
+var arv = [5,4,7,5,3,2]
+var arq = [5,4,7,5,3,5] //5,4,7,5,8 //5,4,7,5,3,2 //
 //var removed = arr.remove(at: 1)
 perm.nextPermutation(&arr)
 
 //print(arr.insert(removed, at: 2))
 //print(arr)
+// DO NOT CONVERT ARRAY TO INT
+
+func compareArray(_ nums1:[Int], _ nums2: [Int]) -> [Int] {
+    for i in 0..<nums1.count {
+        if nums1[i] < nums2[i] {
+            return nums1
+        } else if nums2[i] > nums1[i] {
+            return nums2
+        }else {
+            continue
+        }
+            
+    }
+    
+    return []
+}
+
+print(compareArray([0,0,0], [2,1,3]))
