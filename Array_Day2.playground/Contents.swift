@@ -495,30 +495,30 @@ class SolutionL {
     
     func nextPermutation(_ nums: inout [Int]) {
      //rethinking the solution to next permutation problem
-        
+      if nums.count == 1 {
+        return
+      }
         let counted = nums.count
         guard let first = nums.first else { return }
         var j = 1
         var i = 0
         var testArr = nums
-       
+        var container:[[Int]] = [[Int]]()
+      
         for _ in nums  {
              
             while j < counted {
                 
                 var removed = nums.remove(at: i)
                 nums.insert(removed, at: j)
-                
-                if let inFirst = nums.first, inFirst >= first {
-                    
+               
+              if testArr.lexicographicallyPrecedes(nums) {
                     if testArr == nums {
                         j += 1
                         i += 1
                         continue
                     } else {
-                        testArr = compareArray(nums, testArr)
-                        j += 1
-                        i += 1
+                      container.append(nums)
                     }
                     
                 } else {
@@ -538,52 +538,37 @@ class SolutionL {
             j = 1
             i = 0
         }
-        
-    }
-    
-    func compareArray(_ nums1:[Int], _ nums2: [Int]) -> [Int] {
-        for i in 0..<nums1.count {
-            if nums1[i] < nums2[i] {
-                return nums1
-            } else if nums2[i] < nums1[i] {
-                return nums2
-            }else {
-                continue
-            }
-                
+      
+      container.sort(by: { $0.lexicographicallyPrecedes($1) })
+      
+      if container.count == 1 {
+        if nums.lexicographicallyPrecedes(container[0]) {
+          nums = container.first!
+        } else {
+          nums.sort(by: <)
         }
+      } else if container.isEmpty {
+        nums.sort(by: <)
+      } else {
         
-        return []
+        nums = container.first!
+      }
+      
     }
+  
 }
 
 
 let perm = SolutionL()
 var arr = [80,12,17,84]
-var ars = [1,2,3]
-var arx = [1,1,5]
-var arv = [5,4,7,5,3,2]
+var ars = [7,5]
+var arx = [1,3,2]
+var arv = [5,4,7,5,3,2] // 5,5,2,3,4,7
 var arq = [5,4,7,5,3,5] //5,4,7,5,8 //5,4,7,5,3,2 //
 //var removed = arr.remove(at: 1)
-perm.nextPermutation(&arr)
+perm.nextPermutation(&arv)
 
 //print(arr.insert(removed, at: 2))
-//print(arr)
-// DO NOT CONVERT ARRAY TO INT
+//print(arv)
 
-func compareArray(_ nums1:[Int], _ nums2: [Int]) -> [Int] {
-    for i in 0..<nums1.count {
-        if nums1[i] < nums2[i] {
-            return nums1
-        } else if nums2[i] > nums1[i] {
-            return nums2
-        }else {
-            continue
-        }
-            
-    }
-    
-    return []
-}
-
-print(compareArray([0,0,0], [2,1,3]))
+//print(compareArray([2,1,3],[2,3,1], 1))
