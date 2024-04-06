@@ -80,9 +80,6 @@ func maxAreaEf(_ height: [Int]) -> Int {
 }
 
 //maxAreaEf([4,3,2,1,4])
-<<<<<<< HEAD
-=======
-
 // convert Int to Roman Numeral strings
 // Hint:
 class SolutionRoman {
@@ -185,4 +182,81 @@ canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2])//2,3,4
 let ar = [2,4,5]
 
 print(ar.min())
+
+
+class TwoSumSolution {
+    /*
+    This O(n) solution contains a different approaches to the two sum problem.
+    The optimized solution is different from the popular dictionary approach.
+    Even though I am using a HashMap aka dictionary, I am asking two important question within my loop:
+        a. after finding the other half of my array, is the next item in the array equal to this half? if it is, thats the happy path return the index and index + 1.
+        b. if the half is not it, use the half as the key to a dictionary along with
+        the current value and index.
+        c. then we have to keep checking the next item in array if it has been encountered before.
+
+    */
+    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        var dict:[Int:(Int,Int)] = [:]
+        var result:[Int] = []
+
+        for (index,current) in nums.enumerated() {
+            var half = target - current
+            var nextIndex = index + 1
+            if nextIndex < nums.count {
+                if let val = dict[nums[nextIndex]] {
+                    result.append(val.1)
+                    result.append(nextIndex)
+                    return result
+                }
+                else if half  == nums[nextIndex]   {
+                    result.append(nextIndex)
+                    result.append(index)
+                    return result
+                } else {
+                    dict[half] = (current, index)
+                }
+            }
+
+        }
+
+        /*
+        O(n ^ 2) SOLUTION
+        for (index,item) in nums.enumerated() {
+            dict[index] = item
+        }
+
+        for (index,value) in nums.enumerated() {
+            let diff = target - value
+            if let val = getKey(index:index,value:diff,dict:dict) {
+                result.append(val)
+                result.append(index)
+                return result
+            }
+              
+        }*/
+        
+/*
+O(n ^ 2) SOLUTION
+        for (indexx,x) in nums.enumerated() { //n
+            for (indexy, y) in nums.enumerated() { // n -1
+                if x + y == target && indexy > indexx {
+                    result.append(indexx)
+                    result.append(indexy)
+                    return result
+                }
+            }
+        }
+*/
+        return result
+    }
+
+    func getKey(index:Int, value: Int, dict: [Int: Int]) -> Int? {
+    for (key, dictValue) in dict {
+        if dictValue == value &&  key != index {
+            return key
+        }
+    }
+    return nil // Value not found in dictionary
+}
+}
 
