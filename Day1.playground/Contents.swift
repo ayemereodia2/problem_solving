@@ -257,6 +257,57 @@ O(n ^ 2) SOLUTION
         }
     }
     return nil // Value not found in dictionary
-}
+ }
 }
 
+class PalindromeSolution {
+    func isPalindrome(_ x: Int) -> Bool {
+        if x < 0 {
+            return false
+        }
+
+        if x == 0 {
+            return true
+        }
+
+        let newNum = splitNumber(x)
+        return isPal(newNum)
+    }
+
+
+    func splitNumber(_ num: Int) -> [Int] {
+    
+        var remnant = num
+        var power = 0
+        var resultArray = [Int]()
+        
+        while remnant > 0 {
+        let result = remnant % 10
+        resultArray.append(result)
+        remnant = remnant / 10 // Divide by 10 to remove the last digit
+        }
+        
+        return resultArray.reversed()
+    }
+
+
+    func isPal(_ arr: [Int]) -> Bool {
+        var x = 0
+        var y = arr.count - 1
+        let mid = arr.count / 2
+
+        if arr.count == 1 {
+            return true
+        }
+
+        while(arr[x] == arr[y] && x <= mid && y >= mid) {
+            x += 1
+            y -= 1
+            if x == mid && arr[x] == arr[y] {
+                return true
+            }
+        }
+
+        return false
+    }
+}
