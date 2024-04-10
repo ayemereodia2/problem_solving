@@ -261,7 +261,26 @@ O(n ^ 2) SOLUTION
 }
 
 class PalindromeSolution {
-    func isPalindrome(_ x: Int) -> Bool {
+  
+  // improved solution
+  func isPalindrome(_ x: Int) -> Bool {
+          if x < 0 {
+              return false
+          }
+          
+          var original = x
+          var reversed = 0
+          
+          while original > 0 {
+              let digit = original % 10
+              reversed = reversed * 10 + digit
+              original /= 10
+          }
+          
+          return x == reversed
+    }
+  
+    func isPalindromeY(_ x: Int) -> Bool {
         if x < 0 {
             return false
         }
@@ -309,5 +328,64 @@ class PalindromeSolution {
         }
 
         return false
+    }
+}
+
+
+class RomanToIntSolution {
+    func romanToInt(_ s: String) -> Int {
+        let dict:[Character:Int] = ["I":1, "V":5,"X":10,"L":50,"C":100,"D":500,"M":1000]
+        let special:[String:Int] = ["IV":4, "IX":9, "XL":40,"XC":90,"CD":400,"CM":900]
+        var seen:[Character] = []
+        var total = 0
+        var index = 0
+
+        
+
+        for (index,chr) in s.enumerated() {
+            if s.count == 1 {
+              if let singleValue = dict[chr] {
+                 return singleValue
+               }
+            }
+                var strValue = s[s.index(s.startIndex, offsetBy: index)]
+
+                if index + 1 < s.count {
+                    var strNxtValue = s[s.index(s.startIndex, offsetBy: index + 1)]
+                    
+                    if let val = dict[strValue], let val2 = dict[strNxtValue] {
+                        if val > val2 && !seen.contains(chr) {
+                            total += val
+                             seen.append(strValue)
+                        } else if val < val2 && !seen.contains(chr) {
+                            let merge = String(strValue) + String(strNxtValue)
+                            if let unique = special[merge] {
+                                total += unique
+                            }
+                            seen.append(strNxtValue)
+                        }
+                        else if val == val2 {
+                            total += val
+                        }
+
+                        
+                    }
+                    
+                } else {
+                    var lastValue = s[s.index(s.startIndex, offsetBy: index)]
+                    var secondToLast = s[s.index(s.startIndex, offsetBy: index - 1)]
+                    if let lastV = dict[strValue], let secondToV = dict[secondToLast] {
+                        if lastV < secondToV && !seen.contains(lastValue){
+                            total += lastV
+                        } else if lastV == secondToV {
+                            total += lastV
+                        }
+                        
+                    }
+                }
+            
+        }
+
+        return total
     }
 }
