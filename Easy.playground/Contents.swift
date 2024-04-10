@@ -389,3 +389,44 @@ class RomanToIntSolution {
         return total
     }
 }
+
+
+class LongestCommonPrefixSolution {
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        if strs.count == 1 {
+            return strs[0]
+        }
+
+        var longest = ""
+        var longestStr = 0
+        for (index,str) in strs.enumerated() {
+            if index + 1 == 1 {
+                longest = commonPreFix(strs[index], strs[index + 1])
+                
+            } else {
+                longest = commonPreFix(longest, strs[index])
+            }
+        }
+        return longest
+    }
+
+
+    func commonPreFix(_ s1:String, _ s2:String) -> String {
+        var i = 0
+        var j = 0
+        var strBuild = ""
+
+        while(i < s1.count && j < s2.count) {
+            var chr1 = s1[s1.index(s1.startIndex, offsetBy: i)]
+            var chr2 = s2[s2.index(s2.startIndex, offsetBy: j)]
+            if chr1 == chr2 {
+                strBuild += String(chr1)
+            }
+
+            i += 1
+            j += 1
+        }
+
+        return strBuild
+    }
+}
