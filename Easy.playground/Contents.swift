@@ -433,6 +433,15 @@ class LongestCommonPrefixSolution {
 
 
 class isValidParenthesisSolution {
+  /*
+   The solution to this problem is to loop through the input string
+   and use a stack DS to keep track of the open paranthesis.
+   When you find a close paranthesis, first pop the top open item in your stash
+   and compare it with the current item to see if its balanced then remove that open item else return false
+   EDGE CASE: if the item is a single item, its not balanced.
+   
+   ultimately return check if the stash count is zero.
+   */
     func isValid(_ s: String) -> Bool {
         var stack = [Character]()
         
@@ -460,3 +469,97 @@ class isValidParenthesisSolution {
         
     }
 }
+
+
+
+ // Definition for singly-linked list.
+public class ListNode {
+  public var val: Int
+  public var next: ListNode?
+  public init() { self.val = 0; self.next = nil; }
+  public init(_ val: Int) { self.val = val; self.next = nil; }
+  public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+}
+ 
+class MergeTwoSortedListSolution {
+    var head:ListNode?
+  /*
+   I created a resultant listNode
+   I used a while loop to monitor 3 case:
+    1. when both loops have values
+    2. when only list1 have values
+    3. when only list2 have values
+   
+    then i created a method to add to the resulting listNode
+   */
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        var newList1 = list1
+        var newList2 = list2
+
+        while(newList1 != nil && newList2 != nil) {
+
+            if let node1 = newList1, let node2 = newList2 {
+                if node1.val < node2.val {
+                    addNode(node1)
+                    newList1 = newList1?.next
+
+                } else if node1.val == node2.val {
+                    addNode(node1)
+                    newList1 = newList1?.next
+
+                } else {
+                    addNode(node2)
+                    newList2 = newList2?.next
+                }
+            }
+
+        }
+
+        while newList1 != nil {
+            if let node1 = newList1 {
+               addNode(node1)
+               newList1 = newList1?.next
+            }
+        }
+
+
+        while newList2 != nil {
+            if let node2 = newList2 {
+                addNode(node2)
+                newList2 = newList2?.next
+            }
+        }
+        return head
+
+    }
+
+
+    func addNode(_ node: ListNode) {
+        var newNode = ListNode(node.val)
+        if head == nil {
+            head = newNode
+        } else {
+            var currentHead = head
+            while currentHead?.next != nil {
+                currentHead = currentHead?.next
+            }
+            currentHead?.next = newNode
+        }
+    }
+}
+
+/*
+var newNode = ListNode(newList2?.val)
+                if head == nil {
+                    head = newNode
+                    newList2 = newList2?.next
+                } else {
+                    var currentHead = head
+                    while currentHead != nil {
+                        currentHead = currentHead?.next
+                    }
+                    currentHead = newNode
+                    newList2 = newList2?.next
+                    newList1 = newList1?.next
+                }
+*/
