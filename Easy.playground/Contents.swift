@@ -430,3 +430,33 @@ class LongestCommonPrefixSolution {
         return strBuild
     }
 }
+
+
+class isValidParenthesisSolution {
+    func isValid(_ s: String) -> Bool {
+        var stack = [Character]()
+        
+        for chr in s {
+            if chr == "(" || chr == "[" || chr == "{" {
+                stack.append(chr)
+            }
+            else {
+               if let lastItem = stack.last {
+                   if lastItem == "(" && chr == ")" || lastItem == "[" && chr == "]" || lastItem == "{" && chr == "}" {
+                       _ = stack.removeLast()
+                   }else {
+                     return false
+                  }
+               } else {
+                   return false
+               }
+                
+            }
+            
+        }
+        
+        
+        return stack.count == 0
+        
+    }
+}
