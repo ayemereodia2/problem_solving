@@ -548,18 +548,44 @@ class MergeTwoSortedListSolution {
     }
 }
 
-/*
-var newNode = ListNode(newList2?.val)
-                if head == nil {
-                    head = newNode
-                    newList2 = newList2?.next
-                } else {
-                    var currentHead = head
-                    while currentHead != nil {
-                        currentHead = currentHead?.next
-                    }
-                    currentHead = newNode
-                    newList2 = newList2?.next
-                    newList1 = newList1?.next
-                }
-*/
+class FindIndexOfFirstSolution {
+  /*
+   using the length of the needle as range into the haystack, and a start index from zero. using a while loop, create a range in the haystack string between start index of zero and needle length. Then increment the start and needlelength by 1.
+   
+   if the sub string is equal to to the needle, return the current start index.
+   */
+    func strStr(_ haystack: String, _ needle: String) -> Int {
+
+        var needleLength = needle.count - 1
+
+        var start = 0
+
+      while needleLength < haystack.count {
+        var sub = haystack[haystack.index(haystack.startIndex, offsetBy: start)...haystack.index(haystack.startIndex, offsetBy: needleLength)]
+        
+        if needle == String(sub) {
+          return start
+        }
+        start += 1
+        needleLength += 1
+        
+      }
+      
+      
+      
+      
+      return -1
+        
+    }
+}
+
+let varued = "padbutpad"
+let needle = "sad"
+
+//var sub = varued[varued.index(varued.startIndex, offsetBy: 6)...varued.index(varued.startIndex, offsetBy: 8)]
+//
+//print(String(sub))
+
+let test = FindIndexOfFirstSolution()
+
+print(test.strStr(varued, needle))
