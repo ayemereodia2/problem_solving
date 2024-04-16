@@ -586,6 +586,98 @@ let needle = "sad"
 //
 //print(String(sub))
 
-let test = FindIndexOfFirstSolution()
+//let test = FindIndexOfFirstSolution()
 
-print(test.strStr(varued, needle))
+//print(test.strStr(varued, needle))
+
+
+// learning sliding window technique
+
+func findSubArraysThatAddUpTo(target:Int, _ nums:[Int]) -> [[Int]] {
+  var left = 0
+  var right = 0
+  var runningSum = 0
+  var result:[[Int]] = []
+  
+  while right < nums.count  {
+    
+    if target < nums[left...right].reduce(0, +) {
+      left += 1
+      
+    } else if target > nums[left...right].reduce(0, +) {
+      right += 1
+      
+    } else {
+      result.append(Array(nums[left...right]))
+      right += 1
+    }
+    
+  }
+  
+  return result
+}
+
+print(findSubArraysThatAddUpTo(target: 9, [9,8,7,6,5,4,3,2,1]))
+
+
+
+class SearchInsertSolution {
+  /*
+   the solution to this problem lies on the knowledge of
+   binary search which has a worst case of O(log N) time
+   note: mid = left + (right - left) / 2
+   while left <=  right
+   */
+    func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+        var modi = nums
+
+        if !modi.contains(target) {
+            modi.append(target)
+            modi.sort(by: <)
+            print(modi)
+        }
+
+    var left = 0
+    var right = modi.count - 1
+    var result = 0
+
+    while left <= right {
+        let mid = left + (right - left) / 2
+        
+        if modi[mid] == target {
+            result = mid
+            return result
+        } else if modi[mid] < target {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
+    }
+
+ return result
+        //return binarySearch(modi, target)
+
+    }
+
+
+func binarySearch(_ nums: [Int], _ target: Int) -> Int {
+    var left = 0
+    var right = nums.count - 1
+    var result = 0
+
+    while left <= right {
+        let mid = left + (right - left) / 2
+        
+        if nums[mid] == target {
+            result = mid
+            return mid
+        } else if nums[mid] < target {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
+    }
+    
+    return result
+}
+}
