@@ -681,3 +681,309 @@ func binarySearch(_ nums: [Int], _ target: Int) -> Int {
     return result
 }
 }
+
+/*
+ Given an array of integers, find the maximum sum sub-array of required size
+ 
+ ex: [-1, 2, 3, 1, -3, 2] sub-array size: 2
+ */
+
+func maximumSumGivenRequired(size: Int, nums: [Int]) -> Int {
+  // brute-force approach
+  // with time complexity of O(n)
+  // space complexity of O(n) which won't scale for really large array inputs
+  var dict:[Int: [Int]] = [:]
+  var maxKey = Int.min
+  
+  for index in 0..<nums.count {
+    var first = nums[index]
+    if index + 1 < nums.count {
+      var second = nums[index + 1]
+      dict[first + second] = Array(nums[index...index + 1])
+    }
+  }
+  
+  
+  for (key,value) in dict {
+    maxKey = max(maxKey, key)
+  }
+  
+  return maxKey
+}
+
+
+//print(maximumSumGivenRequired(size: 2, nums: [-1, 2, 3, 1, -3, 2]))
+
+
+func maximumSumGivenRequiredEff(size: Int, nums: [Int]) -> Int {
+  // using sliding window technique
+  //space complexity of O(1) which is constant even for really large array inputs
+  
+  var first = 0
+  var second = 1
+  var maxKey = Int.min
+  
+  while second < nums.count {
+    maxKey = max(maxKey, nums[first] + nums[second])
+    first += 1
+    second += 1
+  }
+  
+  return maxKey
+}
+
+//print(maximumSumGivenRequiredEff(size: 2, nums: [-1, 2, 3, 1, -3, 2]))
+
+
+/*
+ Medium difficulty, given an array of positive integers, find sub-arrays that add-up
+ to a given number.
+ */
+
+func findSubArraysThatAddUpTo(target: Int, nums:[Int]) -> [[Int]] {
+  /*
+   This approach is a brute force approach. And has a poor time complexity of O(n^2)
+   and space complexity of O(n)
+   */
+  var result:[[Int]] = []
+  
+  for i in 0..<nums.count {
+    for j in i+1..<nums.count {
+      if target == nums[i...j].reduce(0, +) {
+        result.append(Array(nums[i...j]))
+      }
+    }
+  }
+  
+  return result
+}
+
+
+//print(findSubArraysThatAddUpTo(target: 7, [7,1,7,4,3,1,2,1,5,1]))
+
+
+func findSubArraysThatAddUpToEff(target:Int, nums:[Int]) -> [[Int]] {
+  /*
+   This approach uses a dynamically sized sliding window to hold arrays based on if the
+   sum of the array matches the target, greater than or less than.
+   
+   time complexity of O(n)
+   space complexity of O(n)
+   */
+  var first = 0
+  var second = 0
+  var result:[[Int]] = []
+  
+  while second < nums.count {
+    if target > nums[first...second].reduce(0,+) {
+      second += 1
+    } else if target < nums[first...second].reduce(0,+) {
+      first += 1
+    } else {
+      result.append(Array(nums[first...second]))
+      second += 1
+    }
+  }
+  
+  return result
+}
+
+//print(findSubArraysThatAddUpToEff(target: 7, nums: [7,1,7,4,3,1,2,1,5,1]))
+
+
+// VARIANT with negative array inputs.
+
+/*
+ given an array of integers (negative, 0, positive) find the sub-arrays that add up to a target sum
+ using KADANE'S ALGORITHM
+*/
+
+
+/*
+ given an array of 0's and 1's, finding the maximum sequence of continous 1's that can be formed by flipping at most k 0's to 1's.
+ 
+ 
+ */
+
+func maxSequenceOf(flip:Int, bits:[Int]) -> Int {
+  // this is brute force approach that goes through all the possible
+  // sequences of 0's and 1s and finds the longest sub-sequence with 2 0s
+  // time complexity is O(n^2)
+  // space complexity of O(n^2)
+  
+   var maxKey = Int.min
+  
+  for i in 0..<bits.count {
+    for j in i+1..<bits.count {
+      var sub = Array(bits[i...j])
+      
+      if countOccurence(arr: sub) == flip {
+        maxKey = max(maxKey, sub.count)
+      }
+    }
+  }
+  return maxKey
+}
+
+func countOccurence(arr:[Int]) -> Int {
+  var count = 0
+  for int in arr {
+    if int == 0 {
+      count += 1
+    }
+  }
+  return count
+}
+
+//print(maxSequenceOf(flip: 2, bits: [0,1,0,1,0,0,1,1]))
+
+
+func maxSequenceOfEff(flip:Int, bits:[Int]) -> Int {
+  /*
+   This dynamic sliding window approach uses count occurence method to keep track of the
+   number of 0's if the number of zeros is less than the flips, we shrink the window from the left, if its greater, we shrink from the right. If its equal, we also shrink from the right.
+   
+   time complexity is O(n)
+   space complexity is O(1)
+   */
+  var start = 0
+  var end = 0
+  var maxKey = 0
+  
+  while end < bits.count {
+    var sub = Array(bits[start...end])
+    if flip < countOccurence(arr: sub) {
+      start += 1
+    } else if flip > countOccurence(arr: sub) {
+      end += 1
+    } else {
+      maxKey = max(maxKey, sub.count)
+      end += 1
+    }
+  }
+  
+  return maxKey
+}
+
+//print(maxSequenceOfEff(flip: 2, bits: [0,1,0,1,0,0,1,1]))
+
+// VARIANT HARD QUESTION with strings.
+
+/*
+ given a string and n characters, find the shortest substring that contains all the desired characters
+ */
+
+func shortestSubString(desire: String, input:String) -> String {
+  var shortestLen = Int.max
+  var shortest = ""
+  
+  for i in 0..<input.count {
+    for j in i+1..<input.count {
+      var subString = String(input[input.index(input.startIndex, offsetBy: i)...input.index(input.startIndex, offsetBy: j)])
+      if let subContent = seeContains(desire: desire, sub: subString) {
+        shortestLen = max(shortestLen, subContent.count)
+        shortest = subContent
+      }
+    }
+  }
+  
+  return shortest
+}
+
+func seeContains(desire:String, sub:String) -> String? {
+  var reducer = desire.count
+  
+  for chr in desire {
+    if sub.contains(chr) {
+      reducer -= 1
+    }
+  }
+  
+  if reducer == 0 {
+    return sub
+  }
+  return nil
+}
+
+
+print(shortestSubString(desire: "abc", input: "fa4chba4c"))
+
+
+func shortestSubStringEff(desire: String, input:String) -> String {
+  var start = 0
+  var end = 1
+  var shortestLen = Int.max
+  var shortest = ""
+  
+  while end < input.count {
+    var subString = String(input[input.index(input.startIndex, offsetBy: start)...input.index(input.startIndex, offsetBy: end)])
+    
+    if let subContent = seeContains(desire: desire, sub: subString) {
+      shortestLen = max(shortestLen, subContent.count)
+      shortest = subContent
+    }
+  }
+  
+  
+  return shortest
+}
+
+
+class LengthOfLastWordSolution {
+  /*
+   I used a sliding window technique to track the last word in the string
+   */
+    func lengthOfLastWord1(_ s: String) -> Int {
+     
+     var end = s.count - 1
+     var start = end
+
+     if s.count == 1 {
+        return 1
+     }
+
+     while start < s.count  {
+        var subString = String(s[s.index(s.startIndex, offsetBy: start)])
+        if subString != " " {
+            if start == 0 {
+            var subString = String(s[s.index(s.startIndex, offsetBy: start)...s.index(s.startIndex, offsetBy: end)])
+            var cleanStr = subString.replacingOccurrences(of:" ", with: "")
+                if cleanStr != "" {
+                    return cleanStr.count
+                }
+            }
+            
+            start -= 1
+
+        } else {
+
+            var subString = String(s[s.index(s.startIndex, offsetBy: start)...s.index(s.startIndex, offsetBy: end)])
+            var cleanStr = subString.replacingOccurrences(of:" ", with: "")
+            if cleanStr != "" {
+                return cleanStr.count
+            }
+            start -= 1
+            end = start
+        }
+
+     }
+
+     return 0
+        
+    }
+  
+  
+  // Solution with faster run-time
+  func lengthOfLastWord(_ s: String) -> Int {
+      var count = 0
+      for chr in s.reversed() {
+          if chr != " " {
+              count += 1
+          } else if count > 0 {
+              break
+          }
+      }
+
+      return count
+  }
+}
