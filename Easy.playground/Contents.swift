@@ -1027,3 +1027,122 @@ class PlusOneSolution {
         return temp
     }
 }
+
+
+class AddBinarySolution {
+    func addBinary(_ a: String, _ b: String) -> String {
+      /*
+       My solution uses basicall tries to add the two numbers using their right-most
+       1s. so there are 3 cases to keep into consideration:
+       1. when both a and b are equal in length
+       2. when a is longer
+       3. when b is longer
+       created a carry variable
+       So for case 1:
+                 i used the first while loop to check both string from the right-most, if the sum of the carry and first character in a and first character in b is 2 (we carry 1, and append 0), is 3 (we carry 1, and append 1), is 1 (we carry 0, and append 1)
+                 and we add an else condition to check if sum is 0 (we carry 0, and append 0) or if sum is 1 (we carry 0, and append 1)
+                 
+                 then we check that loop has gotten to the end of both string and carry value is 1
+                 and simply append 1.
+       case 2:
+            if string A is longer
+            i continue moving my loop from rigth to left in another while loop,
+            and if sum of carry and next character bit is greater-than 1 (we carry 1, and append 0)
+            and if sum of carry and next character bit is 0  (we carry 0, and append 0)
+            else we simply (we carry 0, and append 1)
+       
+              then we check that loop has gotten to the string and carry value is 1
+              and simply append 1.
+       case 3:
+             if string B is longer
+             same as case 2.
+       
+       */
+
+        var i = a.count - 1
+        var j = b.count - 1
+        var result = ""
+        var carry = 0
+        while i != -1 && j != -1 {
+            var chrA = Int(String(a[a.index(a.startIndex, offsetBy: i)])) ?? 0
+            var chrB = Int(String(b[b.index(b.startIndex, offsetBy: j)])) ?? 0
+
+            if carry + chrA + chrB == 2 {
+                carry = 1
+                result += "0"
+                
+            } else if carry + chrA + chrB == 3 {
+                carry = 1
+                result += "1"
+            }
+             else if carry + chrA + chrB == 1 {
+                carry  = 0
+                result += "1"
+            }
+             else {
+                carry = 0
+                if chrA == 0 && chrB == 0 {
+                    result += "0"
+                }else {
+                    result += "1"
+                }
+            }
+
+            i -= 1
+            j -= 1
+
+            if i == -1 && j == -1 && carry == 1 {
+                    result += "1"
+            }
+        }
+
+        while i != -1 {
+            var chrA = Int(String(a[a.index(a.startIndex, offsetBy: i)])) ?? 0
+            if carry + chrA > 1 {
+                carry = 1
+                result += "0"
+                
+            } else if carry + chrA == 0 {
+                carry = 0
+                result += "0"
+            }
+            else {
+                carry = 0
+                result += "1"
+            }
+
+            i -= 1
+
+            if i == -1 && carry == 1 {
+                    result += "1"
+            }
+        }
+
+        while j != -1 {
+            var chrB = Int(String(b[b.index(b.startIndex, offsetBy: j)])) ?? 0
+            if carry + chrB > 1 {
+                carry = 1
+                result += "0"
+                
+            } else if carry + chrB == 0 {
+                carry = 0
+                result += "0"
+            }
+            else {
+                carry = 0
+                result += "1"
+            }
+
+            j -= 1
+
+            if j == -1 && carry == 1 {
+                    result += "1"
+            }
+        }
+
+
+
+        return String(result.reversed())
+        
+    }
+}
