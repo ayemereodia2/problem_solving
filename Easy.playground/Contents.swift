@@ -987,3 +987,43 @@ class LengthOfLastWordSolution {
       return count
   }
 }
+
+
+class PlusOneSolution {
+  /*
+   The solution starts check from the right-most element, by checking if its a 9
+   if it not, we simply add 1 to the last digit and replace that last digit
+   else, we create a carry variable to hold our extra carry if sum is 10 and loop from that last 9, within the loop if sum is 10, set carry to 1 and set 0 to the current index, if sum is less than 10, we simply add 1 to the last digit and replace that last digit and return from the loop.
+   
+      if we have gotten to the first and carry value is 1, insert it as the first value.
+   */
+    func plusOne(_ digits: [Int]) -> [Int] {
+        var temp = digits
+        var i  = temp.count - 1
+
+        if let last = temp.last {
+            if last == 9 {
+                    var carry = 0
+                    while i != -1 {
+                    if temp[i] + 1  == 10 {
+                        carry = 1
+                        temp[i] = 0
+                    } else if temp[i] + 1  < 10 {
+                        temp[i] = temp[i] + 1
+                        carry = 0
+                        return temp
+                    }
+                    i -= 1
+                    if  i == -1 && carry == 1 {
+                        temp.insert(carry, at: 0)
+                    }
+             }
+                
+            } else {
+                temp[temp.count - 1] = last + 1
+            }
+        }
+
+        return temp
+    }
+}
