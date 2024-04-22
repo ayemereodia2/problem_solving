@@ -905,28 +905,65 @@ func seeContains(desire:String, sub:String) -> String? {
   return nil
 }
 
+func seeContainsCount(desire:[Character], sub:String) -> (Bool, [Character]) {
+  var editable = desire
+  
+  for (index,chr) in desire.enumerated() {
+    if sub.contains(chr) {
+      editable.remove(at: index)
+      return (true, editable)
+    }
+  }
+  return (false, editable)
+}
 
-print(shortestSubString(desire: "abc", input: "fa4chba4c"))
+
+
+//print(shortestSubString(desire: "abc", input: "fa4chba4c"))
 
 
 func shortestSubStringEff(desire: String, input:String) -> String {
+  var chr = [Character]()
+  
+  for i in desire {
+    chr.append(i)
+  }
+  
+  var chr2 = chr
+  
   var start = 0
   var end = 1
+  var count = 0
   var shortestLen = Int.max
   var shortest = ""
   
   while end < input.count {
     var subString = String(input[input.index(input.startIndex, offsetBy: start)...input.index(input.startIndex, offsetBy: end)])
+    var returned = seeContainsCount(desire: chr2, sub: subString)
+   
+    if returned.0 {
+      chr2 = returned.1
+      count += 1
+    }
     
-    if let subContent = seeContains(desire: desire, sub: subString) {
-      shortestLen = max(shortestLen, subContent.count)
-      shortest = subContent
+    if count == 3 {
+      shortestLen = max(shortestLen, subString.count)
+      shortest = subString
+      chr2 = chr
+      start += 1
+      count = 0
+      end = start
+    } else {
+      end += 1
     }
   }
   
   
   return shortest
 }
+
+print(shortestSubStringEff(desire: "abc", input: "fa4chba4c"))
+
 
 
 class LengthOfLastWordSolution {
@@ -1144,5 +1181,31 @@ class AddBinarySolution {
 
         return String(result.reversed())
         
+    }
+}
+
+
+class ClimbStairsSolution {
+  /*
+   The naive solution to this problem uses recursion to find the possible ways of climbing the stairs. Starting with a base case of n == 1, and n == 2.
+   
+   Unfortunately the naive approach blows up your stack memory when n becomes really large. So I applied memoization to cache results that have been previously computed, and access them as needed.
+   */
+    var memo:[Int:Int] = [Int:Int]()
+    func climbStairs(_ n: Int) -> Int {
+        if let val = memo[n] {
+            return val
+        }
+
+        if n == 1 {
+            memo[n] = 1
+            return 1
+        } else if n == 2 {
+            memo[n] = 2
+            return 2
+        } else {
+           memo[n] = climbStairs(n - 1) + climbStairs(n - 2)
+           return climbStairs(n - 1) + climbStairs(n - 2)
+        }
     }
 }
