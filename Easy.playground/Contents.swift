@@ -1233,3 +1233,27 @@ class ClimbStairsSolution {
 }
 
 
+class MySqrtSolution {
+    /*
+    using the Babylonian method that basically resilies on the formular
+     = (Intial + (Double(input) / Initial)) / 2
+     and using a threshold of 10^-6 == 0.000001, we continuosly find a value that is
+     less than than the threshold; by finding the abs value of the initial and the next initial value.
+    */
+    func mySqrt(_ x: Int) -> Int {
+        var threshold = 0.000001
+        var initial = 1.0
+
+        while true {
+            var initialx  = initial
+            initial =  (initialx + (Double(x) / initialx)) / 2
+            let dob = Double(abs(initial - initialx))
+            if dob < threshold {
+                return Int(initial)
+            }
+        }
+
+        
+    }
+
+}
