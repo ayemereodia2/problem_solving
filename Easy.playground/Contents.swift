@@ -1259,19 +1259,29 @@ class MySqrtSolution {
 }
 
 
-
 class DeleteDuplicatesSolution {
+  /*
+   used a while loop to move through the linked list.
+   and within it, I check if the current value is equal to the next value, if it is, store address to the next element and set next address of current element to nil,
+   
+   if it is not, update the address of the next element to current value of the next
+   then move current value to the next
+   and move next to next pointer.
+   */
     func deleteDuplicates(_ head: ListNode?) -> ListNode? {
-       
         var current = head
-        while current?.next != nil {
-            if current?.val == current?.next?.val {
-                current?.next = current?.next?.next
-                print(current?.next?.val)
+        var next = current?.next
+        while next != nil {
+            if current?.val == next?.val {
+                next = next?.next
+                current?.next = nil
+            } else {
+                current?.next = next
+                current = current?.next
+                next = next?.next
             }
             
-            current = current?.next
-            print(current?.val)
+            
         }
         
 
