@@ -1289,3 +1289,19 @@ class DeleteDuplicatesSolution {
         
     }
 }
+
+
+class MergeTwoSortedArraySolution {
+  /*
+   
+   */
+    func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        var j = m
+
+        for index in 0..<nums2.count {
+            nums1[j] = nums2[index]
+            j += 1
+        }
+       nums1 = nums1.sorted(by: <)
+    }
+}
