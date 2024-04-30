@@ -1296,7 +1296,7 @@ class MergeTwoSortedArraySolution {
    The goal is to merge to sorted arrays.
    So given that for the longer array, we already have the empty
    location marked with zeros, we simply have to loop through the shorter arrary, inserting them into the empty spaces with the longer array which happens to begin from Index m.
-   When that insertion is complete, we perform a standard merge sort of the longer array.
+   When the insertion is complete, we perform a standard merge sort of the longer array in ascending order.
    */
     func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
         var j = m
