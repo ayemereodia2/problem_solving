@@ -1308,3 +1308,40 @@ class MergeTwoSortedArraySolution {
        nums1 = nums1.sorted(by: <)
     }
 }
+
+
+
+  //Definition for a binary tree node.
+  public class TreeNode {
+      public var val: Int
+      public var left: TreeNode?
+      public var right: TreeNode?
+      public init() { self.val = 0; self.left = nil; self.right = nil; }
+      public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
+      public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
+          self.val = val
+          self.left = left
+          self.right = right
+      }
+  }
+ 
+class InorderTraversalSolution {
+  /*
+   InorderTraversal of a Binary Tree, traverses the tree by visiting the left node left, then the node, then the right node.
+   Our task was to get all the values in a array, all sorted in ascending order.
+   so I recursively collected all lower values returned by the left tree, then appended the value in the node,
+   and collected all the higer values in the right tree.
+   */
+    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+        var result = [Int]()
+        if root != nil {
+           result.append(contentsOf: inorderTraversal(root?.left))
+            if let node = root {
+                result.append(node.val)
+            }
+            result.append(contentsOf: inorderTraversal(root?.right))
+        }
+        
+        return result
+    }
+}
