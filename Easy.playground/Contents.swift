@@ -1347,3 +1347,37 @@ class InorderTraversalSolution {
 }
 
 // doing some learning of binary search trees
+
+
+
+class IsSymmetricSolution {
+    func isSymmetric(_ root: TreeNode?) -> Bool {
+        if root != nil {
+            var leftNodes = collectAllValues(root?.left).reversed()
+            print(Array(leftNodes))
+            var rightNodes = collectAllValues(root?.right)
+            print(rightNodes)
+            if Array(leftNodes) == rightNodes {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+
+    }
+
+    func collectAllValues(_ root: TreeNode?) -> [Int] {
+        var store = [Int]()
+        if root != nil {
+            store.append(contentsOf: collectAllValues(root?.left))
+            if let rootNode = root {
+                store.append(rootNode.val)
+            }
+            store.append(contentsOf: collectAllValues(root?.right))
+        }
+
+        return store
+    }
+}
