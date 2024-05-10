@@ -1352,32 +1352,43 @@ class InorderTraversalSolution {
 
 class IsSymmetricSolution {
     func isSymmetric(_ root: TreeNode?) -> Bool {
-        if root != nil {
-            var leftNodes = collectAllValues(root?.left).reversed()
-            print(Array(leftNodes))
-            var rightNodes = collectAllValues(root?.right)
-            print(rightNodes)
-            if Array(leftNodes) == rightNodes {
-                return true
-            } else {
-                return false
-            }
-        } else {
+        var leftNode = root?.left
+        var rightNode = root?.right
+        
+        if leftNode == nil && rightNode == nil {
+            
+            return true
+        }
+        
+        guard let firstLeft = leftNode?.val,
+        let firstRight = rightNode?.val else {
             return false
         }
-
-    }
-
-    func collectAllValues(_ root: TreeNode?) -> [Int] {
-        var store = [Int]()
-        if root != nil {
-            store.append(contentsOf: collectAllValues(root?.left))
-            if let rootNode = root {
-                store.append(rootNode.val)
-            }
-            store.append(contentsOf: collectAllValues(root?.right))
+        
+        
+        var leftleftNode = leftNode?.left
+        var rightrightNode = rightNode?.right
+        
+        var leftrightNode = leftNode?.right
+        var rightleftNode = rightNode?.left
+        
+        if (rightleftNode == nil && rightrightNode == nil) && (leftleftNode == nil && leftrightNode == nil) {
+            return firstLeft == firstRight
         }
-
-        return store
+        
+        let leftValue = leftleftNode?.val
+        let rightValue = rightrightNode?.val
+        
+        let nleftleft = leftrightNode?.val
+        let nrightright = rightleftNode?.val
+        
+        
+        if nleftleft == nrightright && leftValue == rightValue {
+            print("got in")
+            return isSymmetric(leftleftNode) == isSymmetric(rightrightNode) && isSymmetric(leftrightNode) == isSymmetric(rightleftNode)
+        }
+        else {
+            return false
+        }
     }
 }
