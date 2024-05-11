@@ -1351,44 +1351,32 @@ class InorderTraversalSolution {
 
 
 class IsSymmetricSolution {
+  /*
+   To determine if a binary tree is symmetric,
+   i had to pass the 2 copies of the target tree in other to properly compare the left node of copy A against the right node of copy B and vice-versa.
+   
+   then right and check also if both nodes are nil
+   
+   if either is nil, the tree is not symmetric
+   
+   if the val on the left and right nodes are equal, and recursive calls to right and left, and left and right
+   */
     func isSymmetric(_ root: TreeNode?) -> Bool {
-        var leftNode = root?.left
-        var rightNode = root?.right
-        
-        if leftNode == nil && rightNode == nil {
-            
+        isMirror(root, root)
+    }
+    
+  // send down copy of main tree, as leftTree and rightTree
+  // compare leftNodes on leftTree with rightNodes on rightTree.
+  // then compare rightNodes on leftTree with leftNodes on rightTree
+    func isMirror(_ leftTree:TreeNode?, _ rightTree:TreeNode?) -> Bool {
+        if leftTree == nil && rightTree == nil {
             return true
         }
         
-        guard let firstLeft = leftNode?.val,
-        let firstRight = rightNode?.val else {
+        if rightTree == nil || rightTree == nil {
             return false
         }
         
-        
-        var leftleftNode = leftNode?.left
-        var rightrightNode = rightNode?.right
-        
-        var leftrightNode = leftNode?.right
-        var rightleftNode = rightNode?.left
-        
-        if (rightleftNode == nil && rightrightNode == nil) && (leftleftNode == nil && leftrightNode == nil) {
-            return firstLeft == firstRight
-        }
-        
-        let leftValue = leftleftNode?.val
-        let rightValue = rightrightNode?.val
-        
-        let nleftleft = leftrightNode?.val
-        let nrightright = rightleftNode?.val
-        
-        
-        if nleftleft == nrightright && leftValue == rightValue {
-            print("got in")
-            return isSymmetric(leftleftNode) == isSymmetric(rightrightNode) && isSymmetric(leftrightNode) == isSymmetric(rightleftNode)
-        }
-        else {
-            return false
-        }
+       return leftTree?.val ==  rightTree?.val && isMirror(leftTree?.left, rightTree?.right) && isMirror(leftTree?.right, rightTree?.left)
     }
 }
