@@ -1380,3 +1380,174 @@ class IsSymmetricSolution {
        return leftTree?.val ==  rightTree?.val && isMirror(leftTree?.left, rightTree?.right) && isMirror(leftTree?.right, rightTree?.left)
     }
 }
+
+
+class SortedArrayToBSTSolution {
+    var root: TreeNode?
+    
+    func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
+        
+        for num in nums {
+            insert(num)
+        }
+        return root
+    }
+
+    public func insert(_ val: Int) {
+        root = insertNode(root, val: val)
+    }
+
+    private func insertNode(_ node: TreeNode?, val: Int) -> TreeNode? {
+        if node == nil {
+            return TreeNode(val)
+        }
+
+        if val < node!.val {
+            node?.left = insertNode(node!.left, val: val)
+        } else if val > node!.val {
+            node?.right = insertNode(node!.right, val: val)
+        }
+
+        // Update height
+        // Check balance factor
+        let balanceFactor = balanceFactor(of: node)
+
+        // Balance the tree if needed
+        if balanceFactor > 1 && val < node!.left!.val {
+            return rotateRight(node)
+        } else if balanceFactor < -1 && val > node!.right!.val {
+            return rotateLeft(node)
+        } else if balanceFactor > 1 && val > node!.left!.val {
+            node?.left = rotateLeft(node!.left)
+            return rotateRight(node)
+        } else if balanceFactor < -1 && val < node!.right!.val {
+            node?.right = rotateRight(node!.right)
+            return rotateLeft(node)
+        }
+
+        return node
+    }
+
+    private func height(of node: TreeNode?) -> Int {
+        if node == nil {
+            return 0
+        } else {
+            return max(height(of: node?.left), height(of: node?.right)) + 1
+        }
+    }
+
+    private func balanceFactor(of node: TreeNode?) -> Int {
+        return height(of: node?.left) - height(of: node?.right)
+    }
+
+    private func rotateLeft(_ node: TreeNode?) -> TreeNode? {
+        let temp = node?.right
+        node?.right = temp?.left
+        temp?.left = node
+        return temp
+    }
+
+    private func rotateRight(_ node: TreeNode?) -> TreeNode? {
+        let temp = node?.left
+        node?.left = temp?.right
+        temp?.right = node
+        return temp
+    }
+}
+
+
+class AVLTrees {
+  var rootNode:TreeNode?
+  
+  func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
+      for num in nums {
+          insert(num)
+      }
+      return rootNode
+  }
+
+  public func insert(_ val: Int) {
+    rootNode = addNode(rootNode,val)
+  }
+  
+  func addNode(_ node: TreeNode?, _ value: Int) -> TreeNode? {
+    if node == nil {
+      return TreeNode(value)
+    }
+    
+    if let val = rootNode?.val, val < value {
+      node?.right = addNode(node?.right, value)
+    } else {
+      node?.left = addNode(node?.left, value)
+    }
+    
+    let balaceFactor = heightFactor(node)
+    
+    if balaceFactor > 1 && value < node!.left!.val {
+      return rotateRight(node)
+    } else if balaceFactor < -1 && value > node!.right!.val {
+      return rotateLeft(node)
+    } else if balaceFactor > 1 && value > node!.left!.val {
+      node?.left = rotateLeft(node?.left)
+      return rotateRight(node)
+    } else if balaceFactor < -1 && value < node!.right!.val {
+      node?.right = rotateRight(node?.right)
+      return rotateLeft(node)
+    }
+    
+    return node
+  }
+  
+  
+  func heightFactor(_ node: TreeNode?) -> Int {
+    height(node?.left) - height(node?.right)
+  }
+  
+  func height(_ node: TreeNode?) -> Int {
+    if node == nil {
+      return 0
+    } else {
+      return max(height(node?.left), height(node?.right)) + 1
+    }
+  }
+  
+  func rotateLeft(_ node: TreeNode?) -> TreeNode? {
+    var temp = node?.right
+    node?.right = temp?.left
+    temp?.left = node
+    return temp
+  }
+  
+  func rotateRight(_ node: TreeNode?) -> TreeNode? {
+    var temp = node?.left
+    node?.left = temp?.right
+    temp?.right = node
+    return temp
+  }
+}
+
+
+class IsBalancedSolution {
+    func isBalanced(_ root: TreeNode?) -> Bool {
+        if root == nil {
+            return true
+        }
+
+        let heightRight = heightOfTree(root?.right)
+        let heightLeft = heightOfTree(root?.left)
+        let height = heightLeft - heightRight
+        if height == 1 || height == -1 || height == 0 {
+            return isBalanced(root?.left) && isBalanced(root?.right)
+        } else {
+            return false
+        }
+    }
+
+    func heightOfTree(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return 0
+        } else {
+            return max(heightOfTree(root?.left), heightOfTree(root?.right)) + 1
+        }
+    }
+}
