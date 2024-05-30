@@ -1551,3 +1551,31 @@ class IsBalancedSolution {
         }
     }
 }
+
+class HasPathSumSolution {
+  /* This problem uses DFS to find the if integer values in existing path in a tree sum up to a target
+   */
+  
+    func hasPathSum(_ root: TreeNode?, _ targetSum: Int) -> Bool {
+        var target = targetSum
+
+        guard root != nil else {
+            return false
+        }
+
+         if root?.left == nil && root?.right == nil {
+           return target - root!.val == 0
+        }
+
+        return hasPathSum(root?.left, getReminant(root,target)!) || hasPathSum(root?.right, getReminant(root,target)!)
+    }
+
+    func getReminant(_ root:TreeNode?, _ target: Int) -> Int? {
+        
+        if let value = root?.val {
+            return target - value
+        }
+        return nil
+        
+    }
+}
