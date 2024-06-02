@@ -1579,3 +1579,43 @@ class HasPathSumSolution {
         
     }
 }
+
+class GenerateSolution {
+  /*
+   In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+   */
+  func generate(_ numRows: Int) -> [[Int]] {
+    var result = [[Int]]()
+    var guider = [1,1]
+    
+    if numRows == 1 {
+      result.append([1])
+      return result
+    }
+    
+    if numRows == 2 {
+      result.append([1])
+      result.append([1,1])
+      return result
+    }
+    
+    for i in 1...numRows {
+      if i == 1 {
+        result.append([1])
+      }else if i == 2 {
+        result.append([1,1])
+      } else {
+        var lastValues = result.last!
+        for index in 0..<lastValues.count {
+          if index + 1 < lastValues.count {
+            var sum = lastValues[index] + lastValues[index + 1]
+            guider.insert(sum, at: 1)
+          }
+        }
+        result.append(guider)
+        guider = [1,1]
+      }
+    }
+    return result
+  }
+}
