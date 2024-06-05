@@ -1619,3 +1619,79 @@ class GenerateSolution {
     return result
   }
 }
+
+
+func levelOrderTraverse(_ root: TreeNode?) {
+  var queue = [TreeNode?]()
+  
+  if let rootNode = root {
+    queue.append(rootNode)
+    
+    while !queue.isEmpty {
+      let dequedNode = queue.removeFirst()
+      if let visit = dequedNode?.val {
+        print("\(visit)")
+      }
+      queue.append(dequedNode?.left)
+      queue.append(dequedNode?.right)
+    }
+  }
+  
+}
+
+let root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+
+root.left?.left = TreeNode(4)
+root.left?.right = TreeNode(5)
+
+root.right?.left = TreeNode(6)
+root.right?.right = TreeNode(7)
+
+
+levelOrderTraverse(root)
+
+
+class GetRowSolution {
+  /*
+   Get a specific row of a pascal triangle
+   */
+  func getRow(_ rowIndex: Int) -> [Int] {
+      var result = generate(rowIndex)
+      return result[rowIndex]!
+  }
+
+ func generate(_ numRows: Int) -> [Int: [Int]] {
+    var result = [Int: [Int]]()
+    var guider = [1,1]
+    if numRows == 0 {
+      result[numRows] = [1]
+      return result
+    }
+    
+    if numRows == 1 {
+      result[numRows] = [1,1]
+      return result
+    }
+    
+    for i in 0...numRows {
+      if i == 0 {
+        result[i] = [1]
+      }else if i == 1 {
+        result[i] = [1,1]
+      } else {
+        var lastValues = result[i - 1]!
+        for index in 0..<lastValues.count {
+          if index + 1 < lastValues.count {
+            var sum = lastValues[index] + lastValues[index + 1]
+            guider.insert(sum, at: 1)
+          }
+        }
+        result[i] = guider
+        guider = [1,1]
+      }
+    }
+    return result
+  }
+}
