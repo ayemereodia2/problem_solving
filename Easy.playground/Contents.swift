@@ -1650,7 +1650,7 @@ root.right?.left = TreeNode(6)
 root.right?.right = TreeNode(7)
 
 
-levelOrderTraverse(root)
+//levelOrderTraverse(root)
 
 
 class GetRowSolution {
@@ -1694,4 +1694,177 @@ class GetRowSolution {
     }
     return result
   }
+}
+
+var adjancenyList = [
+  0:[1,2],
+  1:[0,3,4],
+  2:[0],
+  3:[1],
+  4:[1,5],
+  5:[4]
+]
+
+/*
+ Recursive DFS using recursion
+ */
+
+func DFS(graph:[Int:[Int]], startNode:Int, register:inout [Bool]){
+  if !register[startNode] {
+    register[startNode] = true
+  }else{
+    return
+  }
+  
+  
+  guard let neighbors = graph[startNode] else { return }
+  
+  for node in neighbors {
+    if !register[node] {
+      DFS(graph: graph, startNode: node, register: &register)
+    }
+  }
+  
+}
+
+var visited = [false,false,false,false,false,false]
+
+//DFS(graph: adjancenyList, startNode: 0, register: &visited)
+//print(visited)
+
+
+/*
+ Iterative Depth first Search Algorithm using a Stack
+ */
+func DFS2(graph:[Int:[Int]], startNode:Int) -> [Bool] {
+  var visited = Array(repeating: false, count: graph.count)
+  var stack = [Int]()
+  stack.append(startNode)
+  
+  while !stack.isEmpty {
+    var examined = stack.removeLast()
+    
+    if !visited[examined]{
+      visited[examined] = true
+    }
+    
+    var connected = graph[examined]!
+    
+    for neighbor in connected {
+      if !visited[neighbor] {
+        stack.append(neighbor)
+      }
+    }
+    
+  }
+  
+  return visited
+}
+
+//print(DFS2(graph: adjancenyList, startNode: 0))
+
+
+// find the shortest path between two nodes
+
+func findShortest(graph:[Int:[Int]], startNode:Int, endNode: Int) -> [Int] {
+  var prev = solve(startNode:startNode, graph:graph)
+  //reconstruct(startNode,endNode,prev)
+  return reconstruct(startNode,endNode,prev)
+}
+
+func solve(startNode:Int, graph:[Int:[Int]]) -> [Int] {
+  var queue = [Int]()
+  var prev = Array(repeating: 0, count: graph.count)
+  var visited = Array(repeating: false, count: graph.count)
+  
+  queue.append(startNode)
+  
+  while !queue.isEmpty {
+    var poped = queue.removeFirst()
+    
+    if !visited[poped] {
+      visited[poped] = true
+    }
+    
+    var neigh = graph[poped]!
+    
+    for neighbor in neigh {
+      if !visited[neighbor] {
+        queue.append(neighbor)
+        visited[neighbor] = true
+        prev[neighbor] = poped
+      }
+    }
+    
+  }
+  return prev
+}
+
+func reconstruct(_ startNode:Int,_ endNode:Int, _ prev:[Int]) -> [Int] {
+  var path = [Int]()
+  var at = endNode
+  print(prev)
+  while(at != 0) {
+    at = prev[at]
+    path.append(at)
+  }
+  
+  path.reverse()
+  
+  if path[0] == startNode {
+    return path
+  }
+  
+  return []
+}
+
+
+print(findShortest(graph: adjancenyList, startNode: 0, endNode: 5))
+
+
+/*
+ Best time to buy stock solution
+ */
+
+class MaxProfitSolution {
+
+  /*
+   O(n) solution keeps track of the minPrice
+   and finds the max profit as the running max of currPrice - minPrice
+   */
+ func maxProfit(_ prices: [Int]) -> Int {
+        
+        var maxProfit = 0
+        var minPrice = prices[0]
+
+        for i in 0..<prices.count {
+            minPrice = min(prices[i], minPrice)
+            maxProfit = max(prices[i] - minPrice, maxProfit)
+        }
+
+        return maxProfit
+    }
+
+
+
+/*
+ The first approach is O(n^2) with two loops
+ going through all the possibilites of max of sellPrice - currPrice
+ */
+    /*func maxProfit(_ prices: [Int]) -> Int {
+        
+        var maxProfit = 0
+
+        for i in 0..<prices.count {
+            var costPrice = prices[i]
+
+            for j in i+1..<prices.count {
+                var sellPrice = prices[j]
+
+                maxProfit = max(sellPrice - costPrice, maxProfit)
+            }
+        }
+
+        return maxProfit
+    }*/
 }
