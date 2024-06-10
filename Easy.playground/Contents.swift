@@ -1882,3 +1882,40 @@ class IsPalindromeSolution {
         return reversedString == filtered
     }
 }
+
+/*
+ Find single number in an array repeated numbers
+ */
+class SingleNumberSolution {
+    func singleNumber(_ nums: [Int]) -> Int {
+        var store = [Int:Int]()
+        var count = 0
+      
+      /*
+       initializa dictionary values to all zeros
+      for item in nums {
+        store[item] = count
+      }
+       */
+      
+      /*
+       count same occurence that you find and store in dictionary
+      for item in nums {
+        var counter = store[item]! + 1
+        store[item] = counter
+      }
+    */
+        for item in nums {
+            store[item, default: 0] += 1
+        }
+
+
+        for (key,val) in store {
+            if val == 1 {
+                return key
+            }
+        }
+
+       return count
+    }
+}
