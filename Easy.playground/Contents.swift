@@ -1868,3 +1868,17 @@ class MaxProfitSolution {
         return maxProfit
     }*/
 }
+
+
+class IsPalindromeSolution {
+  /*
+   First begin by filtering out all characters that are not letter or numbers
+   then change to all lowercase, then reverse it.
+   compare that output with original string for equality
+   */
+    func isPalindrome(_ s: String) -> Bool {
+        var filtered = s.filter { $0.isLetter || $0.isNumber }.lowercased()
+        var reversedString = String(filtered.reversed())
+        return reversedString == filtered
+    }
+}
